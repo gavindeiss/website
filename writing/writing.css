@@ -50,6 +50,7 @@ h1 {
 }
 
 .writing-toggle {
+    display: block;
     margin: 36px 0 28px;
 }
 
@@ -67,12 +68,24 @@ h1 {
     display: flex;
     gap: 6px;
     padding-top: 8px;
+    width: 100%;
 }
 
-.toggle-button-small {
+.poetry-toggle.is-hidden {
+    display: none;
+}
+
+.poetry-toggle .toggle-button-small {
     flex: 0 0 auto;
-    font-size: 0.75rem;
-    padding: 3px 8px;
+    font-size: 0.7rem;
+    opacity: 0.5;
+    padding: 2px 7px;
+}
+
+.poetry-toggle .toggle-button-small:hover,
+.poetry-toggle .toggle-button-small:focus-visible,
+.poetry-toggle .toggle-button-small.is-active {
+    opacity: 1;
 }
 
 .writing-toggle-primary {
@@ -158,5 +171,10 @@ h1 {
     .toggle-button {
         flex: 1;
         padding: 10px 8px;
+    }
+
+    .poetry-toggle .toggle-button-small {
+        flex: 0 0 auto;
+        padding: 2px 7px;
     }
 }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Writing — Gavin's World</title>
+    <title>Writing</title>
 
     <link rel="stylesheet" href="writing.css">
 </head>
@@ -17,7 +17,7 @@
     <h1>Writing</h1>
 
     <nav>
-        <a href="../landing.html">Formal Announcements Page</a>
+        <a href="../landing/">Formal Announcements Page</a>
     </nav>
 
     <hr>
@@ -25,23 +25,6 @@
     <nav>
         <a href="../">Home</a>
         |
-            <article class="writing-entry">
-                <p class="entry-label">Poem</p>
-                <h4>Before the Page</h4>
-                <p>
-                    The cursor waits inside the line,<br>
-                    a little door that has not learned my name.<br>
-                    Outside, the morning gathers itself<br>
-                    from pieces of weather and unfinished thought.
-                </p>
-                <p>
-                    I bring one word to the doorway.<br>
-                    It does not open.<br>
-                    It becomes a window instead,<br>
-                    and through it I can see<br>
-                    the sentence waiting to be true.
-                </p>
-            </article>
         <span>Special Interests:</span>
         <a href="../music/">Music</a>
         <a class="current-page">Writing</a>
@@ -172,7 +155,9 @@
                 section.hidden = !isSelected;
             });
 
-            poetryToggle.hidden = targetId !== "poetry";
+            const isPoetrySelected = targetId === "poetry";
+            poetryToggle.classList.toggle("is-hidden", !isPoetrySelected);
+            poetryToggle.style.display = isPoetrySelected ? "flex" : "none";
         });
     });
 
@@ -200,7 +185,7 @@
     <hr>
 
     <p>
-        <a href="../landing.html">Formal Announcements Page</a>
+        <a href="../landing/">Formal Announcements Page</a>
         |
         <a href="../">Back to Home</a>
     </p>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gavin's World</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        header {
+            border-bottom: 3px solid #171717;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            letter-spacing: -3px;
+        }
+
+        .subtitle {
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .current-page {
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            letter-spacing: 0.04em;
+        }
+
+        main {
+            display: block;
+        }
+
+        section {
+            border-left: 3px solid #171717;
+            padding-left: 20px;
+        }
+
+        section h2 {
+            margin-top: 0;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .glyph {
+            font-size: 3rem;
+            margin: 10px 0;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding-top: 15px;
+            border-top: 1px solid #171717;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>Gavin's World</h1>
+
+    <hr>
+
+    <nav>
+        <a href="landing.html">Formal Announcements Page</a>
+    </nav>
+
+    <hr>
+
+    <nav>
+        <a class="current-page">Home (here)</a>
+        |
+        <span>Special Interests:</span>
+
+        <a href="music/">Music</a>
+        <a href="writing/">Writing</a>
+        <a href="visual art/">Visual Art</a>
+
+        <span class="future-interests">
+            <a href="#">Politics</a>
+            <a href="#">Linguistics</a>
+            <a href="#">Philosophy</a>
+            <a href="#">Theology</a>
+        </span>
+    </nav>
+
+    <hr>
+
+</header>
+
+
+
+<main>
+
+    <section class="blog-feed" aria-labelledby="blog-heading">
+
+        <div class="blog-intro">
+            <div class="glyph">✶ ♫ ◌</div>
+
+            <h2 id="blog-heading">Latest</h2>
+
+            <p>
+                Notes, works in progress, images, sounds, and whatever else
+                feels worth putting here.
+            </p>
+        </div>
+
+        <article class="blog-entry">
+
+            <header class="blog-entry-header">
+                <h3>Welcome to the blog</h3>
+                <p class="blog-entry-meta">
+                    Posted
+                    <time datetime="2026-09-10T13:12:41-04:00">
+                        September 10, 2026 at 1:12 PM EDT
+                    </time>
+                </p>
+            </header>
+
+            <div class="blog-entry-content">
+                <p>
+                    This is the first post. Future entries can hold writing,
+                    images, videos, links, or any combination of them.
+                </p>
+                <p>
+                    <a href="blog/entries/2026-09-10-welcome.html">Read the full entry →</a>
+                </p>
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+
+<footer>
+    <p>
+        © 2026 Gavin · made w gpt tbh, just html and css tho, no js or anything fancy. Also this isn't actually copyrighted lol ©
+    </p>
+</footer>
+
+</body>
+</html>

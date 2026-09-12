@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Writing — Gavin's World</title>
+
+    <link rel="stylesheet" href="writing.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>Writing</h1>
+
+    <nav>
+        <a href="../landing.html">Formal Announcements Page</a>
+    </nav>
+
+    <hr>
+
+    <nav>
+        <a href="../">Home</a>
+        |
+            <article class="writing-entry">
+                <p class="entry-label">Poem</p>
+                <h4>Before the Page</h4>
+                <p>
+                    The cursor waits inside the line,<br>
+                    a little door that has not learned my name.<br>
+                    Outside, the morning gathers itself<br>
+                    from pieces of weather and unfinished thought.
+                </p>
+                <p>
+                    I bring one word to the doorway.<br>
+                    It does not open.<br>
+                    It becomes a window instead,<br>
+                    and through it I can see<br>
+                    the sentence waiting to be true.
+                </p>
+            </article>
+        <span>Special Interests:</span>
+        <a href="../music/">Music</a>
+        <a class="current-page">Writing</a>
+        <a href="../visual art/">Visual Art</a>
+        <span class="future-interests">
+            <a href="#">Politics</a>
+            <a href="#">Linguistics</a>
+            <a href="#">Philosophy</a>
+            <a href="#">Theology</a>
+        </span>
+    </nav>
+
+    <hr>
+
+</header>
+
+<main>
+
+    <div class="writing-intro">
+        <p>
+            A home for poems, short stories, and whatever else wants to
+            become a piece of writing.
+        </p>
+    </div>
+
+    <div class="writing-toggle" role="group" aria-label="Choose a writing category">
+        <div class="writing-toggle-primary">
+            <button class="toggle-button is-active" type="button" aria-pressed="true" aria-controls="poetry" data-target="poetry">
+                Poetry
+            </button>
+            <button class="toggle-button" type="button" aria-pressed="false" aria-controls="short-stories" data-target="short-stories">
+                Short Stories
+            </button>
+        </div>
+        <div class="poetry-toggle" role="group" aria-label="Choose a poetry category">
+            <button class="toggle-button toggle-button-small is-active" type="button" aria-pressed="true" aria-controls="haiku-tanka" data-poetry-target="haiku-tanka">
+                Haiku &amp; Tanka
+            </button>
+            <button class="toggle-button toggle-button-small" type="button" aria-pressed="false" aria-controls="free-form" data-poetry-target="free-form">
+                Free-form
+            </button>
+        </div>
+    </div>
+
+    <section class="writing-section is-visible" id="poetry" aria-labelledby="poetry-heading">
+        <h2 id="poetry-heading">Poetry</h2>
+
+        <div class="poetry-view is-visible" id="haiku-tanka">
+            <h3>Haiku &amp; Tanka</h3>
+            <article class="writing-entry">
+                <p class="entry-label">Untitled · Undated</p>
+                <h4>Untitled</h4>
+                <p>
+                    Through the looking glass,<br>
+                    Pilot pens touch blades of grass,<br>
+                    Desks on concrete floors.<br>
+                    Nature lurks into the halls,<br>
+                    Communal space flies for all.
+                </p>
+            </article>
+        </div>
+
+        <div class="poetry-view" id="free-form" hidden>
+            <h3>Free-form</h3>
+            <article class="writing-entry">
+                <p class="entry-label">Untitled · Undated</p>
+                <h4>Untitled</h4>
+                <p>
+                    I just wonder why they don’t teach us in school<br>
+                    How unimportant talking really is.<br>
+                    It’s almost all nonverbal, how we speak after 25.<br><br>
+                    The clanging of keys, jangling from my pants, on a Carabiner.<br><br>
+                    The click of a coworker’s computer-keyboard taps.<br><br>
+                    The calm cadence of your knife hitting a cutting board after your partner<br>
+                    Fluffed the couch cushion with just the right rigor.<br><br>
+                    The disquieting clatter of a silver spoon,<br>
+                    thrown just slightly too hard,<br>
+                    Into the dishwasher,<br>
+                    After hearing your love scuff their tennis shoes on the linoleum –<br>
+                    They know you don’t like that.<br><br>
+                    It's all undecipherable morse code that<br>
+                    Breaks the binary.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <section class="writing-section" id="short-stories" aria-labelledby="short-stories-heading" hidden>
+        <h2 id="short-stories-heading">Short Stories</h2>
+
+        <article class="writing-entry">
+            <p class="entry-label">Coming soon</p>
+            <h3>A place for short stories</h3>
+            <p>
+                This is where short stories can live. Replace this
+                placeholder with a story, title, and any details you want to
+                share.
+            </p>
+        </article>
+    </section>
+
+</main>
+
+<script>
+    const toggleButtons = document.querySelectorAll(".toggle-button");
+    const writingSections = document.querySelectorAll(".writing-section");
+    const poetryToggle = document.querySelector(".poetry-toggle");
+    const poetryButtons = document.querySelectorAll("[data-poetry-target]");
+    const poetryViews = document.querySelectorAll(".poetry-view");
+
+    toggleButtons.forEach((button) => {
+        if (button.hasAttribute("data-poetry-target")) {
+            return;
+        }
+
+        button.addEventListener("click", () => {
+            const targetId = button.dataset.target;
+
+            toggleButtons.forEach((toggleButton) => {
+                const isSelected = toggleButton === button;
+                toggleButton.classList.toggle("is-active", isSelected);
+                toggleButton.setAttribute("aria-pressed", isSelected);
+            });
+
+            writingSections.forEach((section) => {
+                const isSelected = section.id === targetId;
+                section.classList.toggle("is-visible", isSelected);
+                section.hidden = !isSelected;
+            });
+
+            poetryToggle.hidden = targetId !== "poetry";
+        });
+    });
+
+    poetryButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const targetId = button.dataset.poetryTarget;
+
+            poetryButtons.forEach((poetryButton) => {
+                const isSelected = poetryButton === button;
+                poetryButton.classList.toggle("is-active", isSelected);
+                poetryButton.setAttribute("aria-pressed", isSelected);
+            });
+
+            poetryViews.forEach((view) => {
+                const isSelected = view.id === targetId;
+                view.classList.toggle("is-visible", isSelected);
+                view.hidden = !isSelected;
+            });
+        });
+    });
+</script>
+
+<footer>
+
+    <hr>
+
+    <p>
+        <a href="../landing.html">Formal Announcements Page</a>
+        |
+        <a href="../">Back to Home</a>
+    </p>
+
+</footer>
+
+</body>
+</html>

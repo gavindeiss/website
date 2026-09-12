@@ -1,0 +1,85 @@
+body {
+    background: #f4f0df;
+    color: #171717;
+    font-family: Georgia, serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 25px;
+    line-height: 1.6;
+}
+
+nav {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+nav a,
+nav a:link,
+nav a:visited,
+nav a:hover,
+nav a:active {
+    color: #171717;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.current-page,
+.current-page:visited {
+    color: #171717;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+}
+
+.future-interests {
+    font-size: 0.8em;
+    opacity: 0.55;
+    vertical-align: text-bottom;
+}
+
+.future-interests a {
+    margin-left: 8px;
+}
+
+.album {
+    display: flex;
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.album-image {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.album-image img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.album-info {
+    flex: 1;
+}
+
+.album-info h2 {
+    margin-top: 0;
+}
+
+.album-info h2 a,
+.album-info h2 a:visited {
+    color: #5a435f;
+    font-family: "Courier New", monospace;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
+}
+
+.album-info h2 a:hover {
+    color: #3d2d42;
+}

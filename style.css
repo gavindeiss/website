@@ -1,0 +1,107 @@
+/* Elements */
+body {
+    background: #f4f0df;
+    color: #171717;
+    font-family: Georgia, serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 25px;
+    line-height: 1.6;
+}
+
+/* Classes */
+.future-interests {
+    font-size: 0.8em;
+    opacity: 0.55;
+    vertical-align: text-bottom;
+}
+
+.future-interests a {
+    margin-left: 8px;
+}
+
+.album {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.album-image {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.album-image img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.album-info {
+    flex: 1;
+}
+
+.album-info h2 {
+    margin-top: 0;
+}
+
+.blog-feed {
+    border-left: 3px solid #171717;
+    max-width: 720px;
+    padding-left: 20px;
+}
+
+.blog-intro {
+    margin-bottom: 45px;
+}
+
+.blog-intro .glyph {
+    margin-left: -20px;
+}
+
+.blog-entry {
+    border-top: 1px solid #171717;
+    padding-top: 25px;
+}
+
+.blog-entry-header h3 {
+    margin: 0 0 5px;
+}
+
+.blog-entry-meta {
+    font-size: 0.85rem;
+    margin: 0 0 25px;
+}
+
+.blog-entry-meta time {
+    font-family: "Courier New", monospace;
+}
+
+.blog-entry-content {
+    max-width: 650px;
+}
+
+.entry-media {
+    margin: 25px 0;
+}
+
+.entry-media img,
+.entry-media video,
+.entry-media iframe {
+    display: block;
+    max-width: 100%;
+}
+
+.entry-media video,
+.entry-media iframe {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+}
+
+.entry-media figcaption {
+    font-size: 0.85rem;
+    margin-top: 8px;
+}

@@ -1,0 +1,78 @@
+body {
+	background: #f4f0df;
+	color: #171717;
+	font-family: Georgia, serif;
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 40px 25px;
+	line-height: 1.6;
+}
+
+nav {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+	margin-bottom: 10px;
+}
+
+nav a {
+	color: inherit;
+	text-decoration: none;
+}
+
+nav a:hover {
+	text-decoration: underline;
+}
+
+.current-page {
+	font-family: "Courier New", monospace;
+	font-weight: bold;
+	letter-spacing: 0.04em;
+}
+
+.future-interests {
+	font-size: 0.8em;
+	opacity: 0.55;
+	vertical-align: text-bottom;
+}
+
+.future-interests a {
+	margin-left: 8px;
+}
+
+.art-gallery {
+	margin-top: 40px;
+}
+
+.art-gallery h2 {
+	margin-bottom: 8px;
+}
+
+.art-gallery h3 {
+	border-top: 1px solid #171717;
+	margin: 45px 0 25px;
+	padding-top: 20px;
+}
+
+.art-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 28px;
+}
+
+.art-piece {
+	margin: 0;
+}
+
+.art-piece img,
+.art-piece video {
+	background: #171717;
+	display: block;
+	max-width: 100%;
+	width: 100%;
+}
+
+.art-piece figcaption {
+	font-size: 0.9rem;
+	margin-top: 8px;
+}

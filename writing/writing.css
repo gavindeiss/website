@@ -136,6 +136,18 @@ h1 {
     padding-bottom: 8px;
 }
 
+.poetry-year {
+    margin-bottom: 32px;
+}
+
+.poetry-year > h4 {
+    font-size: 0.9rem;
+    font-weight: normal;
+    letter-spacing: 0.08em;
+    margin: 0 0 14px;
+    text-transform: uppercase;
+}
+
 .empty-section {
     color: #555;
     font-style: italic;
@@ -150,6 +162,13 @@ h1 {
 
 .writing-entry h4 {
     margin-bottom: 5px;
+}
+
+.poem-text {
+    font: inherit;
+    margin: 1em 0;
+    white-space: pre-wrap;
+    tab-size: 4;
 }
 
 .entry-label {

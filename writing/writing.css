@@ -8,6 +8,29 @@ body {
     line-height: 1.6;
 }
 
+header {
+    position: relative;
+}
+
+.support-link {
+    border: 1px solid #171717;
+    background: #f4f0df;
+    color: inherit;
+    display: inline-block;
+    padding: 5px 10px;
+    position: absolute;
+    right: 0;
+    text-decoration: none;
+    top: 0.5rem;
+    z-index: 1;
+}
+
+.support-link:hover,
+.support-link:focus-visible {
+    background: #171717;
+    color: #f4f0df;
+}
+
 nav {
     display: flex;
     gap: 16px;
@@ -181,6 +204,11 @@ h1 {
 @media (max-width: 520px) {
     body {
         padding: 28px 18px;
+    }
+
+    .support-link {
+        right: 0;
+        top: 0.5rem;
     }
 
     .writing-toggle {

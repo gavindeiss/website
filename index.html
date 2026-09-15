@@ -21,6 +21,18 @@
             letter-spacing: -3px;
         }
 
+        .home-heading {
+            align-items: center;
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .home-heading .support-link {
+            flex: 0 0 auto;
+            position: static;
+        }
+
         .subtitle {
             font-style: italic;
             margin-bottom: 25px;
@@ -83,7 +95,10 @@
 
 <header>
 
-    <h1>Gavin Deiss</h1>
+    <div class="home-heading">
+        <h1>Gavin Deiss</h1>
+        <a class="support-link" href="support/">Support</a>
+    </div>
 
     <hr>
         </body>

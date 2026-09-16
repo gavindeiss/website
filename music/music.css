@@ -8,21 +8,21 @@ body {
     line-height: 1.6;
 }
 
-header {
-    position: relative;
+.page-heading {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
 }
 
 .support-link {
-    border: 1px solid #171717;
     background: #f4f0df;
+    border: 1px solid #171717;
     color: inherit;
     display: inline-block;
+    flex: 0 0 auto;
     padding: 5px 10px;
-    position: absolute;
-    right: 0;
     text-decoration: none;
-    top: 0.5rem;
-    z-index: 1;
 }
 
 .support-link:hover,

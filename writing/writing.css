@@ -8,21 +8,21 @@ body {
     line-height: 1.6;
 }
 
-header {
-    position: relative;
+.page-heading {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
 }
 
 .support-link {
-    border: 1px solid #171717;
     background: #f4f0df;
+    border: 1px solid #171717;
     color: inherit;
     display: inline-block;
+    flex: 0 0 auto;
     padding: 5px 10px;
-    position: absolute;
-    right: 0;
     text-decoration: none;
-    top: 0.5rem;
-    z-index: 1;
 }
 
 .support-link:hover,
@@ -194,6 +194,37 @@ h1 {
     tab-size: 4;
 }
 
+.story-preview {
+    margin-bottom: 28px;
+}
+
+.story-preview h3 {
+    margin: 0 0 8px;
+}
+
+.story-link {
+    color: inherit;
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+}
+
+.story-page {
+    border-left: 3px solid #171717;
+    max-width: 680px;
+    padding-left: 20px;
+}
+
+.story-text {
+    font: inherit;
+    margin: 24px 0 0;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+.story-text p {
+    margin: 0 0 1em;
+}
+
 .entry-label {
     font-size: 0.8rem;
     letter-spacing: 0.08em;
@@ -204,11 +235,6 @@ h1 {
 @media (max-width: 520px) {
     body {
         padding: 28px 18px;
-    }
-
-    .support-link {
-        right: 0;
-        top: 0.5rem;
     }
 
     .writing-toggle {

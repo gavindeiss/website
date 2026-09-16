@@ -1,0 +1,97 @@
+.formal-page {
+    font-family: "Baskerville", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+}
+
+.formal-page header {
+    margin-bottom: 40px;
+}
+
+.formal-heading {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.formal-heading h1 {
+    font-size: 3rem;
+    /* font-family: "Papyrus", "Copperplate", "Iowan Old Style", "Palatino Linotype", Georgia, serif; */
+    font-family: "Comic Sans MS";
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+.formal-heading .support-link {
+    flex: 0 0 auto;
+    position: static;
+}
+
+.formal-page nav {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 15px 0 10px;
+}
+
+.formal-page nav a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.formal-page nav a:hover,
+.formal-page nav a:focus-visible {
+    text-decoration: underline;
+}
+
+.formal-rule {
+    background: #171717;
+    height: 3px;
+    margin: 18px 0;
+    position: relative;
+}
+
+.formal-garland {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    left: 8%;
+    opacity: 0.38;
+    pointer-events: none;
+    position: absolute;
+    right: 8%;
+    top: 0;
+    z-index: 1;
+}
+
+.formal-garland span {
+    font-family: "Baskerville", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    font-size: 1.15rem;
+    line-height: 1;
+    transform: translateY(-0.5rem);
+}
+
+.formal-garland span:nth-child(2),
+.formal-garland span:nth-child(6) {
+    transform: translateY(-0.18rem);
+}
+
+.formal-garland span:nth-child(3),
+.formal-garland span:nth-child(5) {
+    transform: translateY(0.16rem);
+}
+
+@media (max-width: 520px) {
+    .formal-heading h1 {
+        font-size: 2.25rem;
+    }
+
+    .formal-garland {
+        left: 3%;
+        right: 3%;
+    }
+
+    .formal-garland span {
+        font-size: 0.9rem;
+    }
+}

@@ -253,7 +253,7 @@ def build_story_markup():
 			f'            <p class="entry-label">Short Story</p>',
 			f'            <h3>{escape(title)}</h3>',
 			f'            <p>{escape(story_excerpt(body))}</p>',
-			f'            <a class="story-link" href="shortStories/pages/{slug}.html">Read the whole story</a>',
+			f'            <a class="story-link" href="shortStories/pages/{slug}.html">View full entry</a>',
 			'        </article>',
 		])
 

@@ -134,9 +134,7 @@ footer a.secret-portal:active {
 }
 
 .blog-feed {
-    border-left: 3px solid #171717;
     max-width: 720px;
-    padding-left: 20px;
 }
 
 .blog-intro {
@@ -148,8 +146,9 @@ footer a.secret-portal:active {
 }
 
 .blog-entry {
-    border-top: 1px solid #171717;
-    padding-top: 25px;
+    border-left: 3px solid #171717;
+    margin: 0 0 28px;
+    padding: 4px 0 4px 20px;
 }
 
 .blog-entry-header h3 {

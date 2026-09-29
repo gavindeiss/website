@@ -1,120 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gavin Deiss</title>
+    <title>Blog</title>
 
-    <link rel="stylesheet" href="style.css">
-
-    <style>
-
-        header {
-            border-bottom: 3px solid #171717;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-size: 4rem;
-            margin: 0;
-            letter-spacing: -3px;
-        }
-
-        .home-heading {
-            align-items: center;
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-        }
-
-        .home-heading .support-link {
-            flex: 0 0 auto;
-            position: static;
-        }
-
-        .subtitle {
-            font-style: italic;
-            margin-bottom: 25px;
-        }
-
-        nav {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        nav a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        .current-page {
-            font-family: "Courier New", monospace;
-            font-weight: bold;
-            letter-spacing: 0.04em;
-        }
-
-        main {
-            display: block;
-        }
-
-        section {
-            padding-left: 20px;
-        }
-
-        section h2 {
-            margin-top: 0;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        .glyph {
-            font-size: 3rem;
-            margin: 10px 0;
-        }
-
-        footer {
-            margin-top: 80px;
-            padding-top: 15px;
-            border-top: 1px solid #171717;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="../writing/writing.css">
 </head>
 
 <body>
 
 <header>
 
-    <div class="home-heading">
-        <h1>Gavin Deiss</h1>
-        <a class="support-link" href="support/">Support</a>
+    <div class="page-heading">
+        <h1>Blog</h1>
+        <a class="support-link" href="../support/">Support</a>
     </div>
 
-    <hr>
     <nav>
-        <a href="landing/">Formal Announcements Page</a>
+        <a href="../landing/">Formal Announcements Page</a>
     </nav>
 
     <hr>
 
     <nav>
-        <a class="current-page">Home (here)</a>
+        <a href="../">Home</a>
         |
         <span>Special Interests:</span>
-
-        <a href="music/">Music</a>
-        <a href="writing/">Writing</a>
-        <a href="visual art/">Visual Art</a>
-
+        <a href="../music/">Music</a>
+        <a class="current-page">Blog</a>
+        <a href="../writing/">Writing</a>
+        <a href="../visual art/">Visual Art</a>
         <span class="future-interests">
             <a href="#">Politics</a>
             <a href="#">Linguistics</a>
@@ -127,24 +45,40 @@
 
 </header>
 
-
-
 <main>
 
-    <section class="blog-feed" aria-labelledby="blog-heading">
-        <h2 id="blog-heading">Blog</h2>
-        <div id="home-blog-posts"></div>
+    <div class="writing-intro">
+        <p>
+            A home for blog posts, notes, and whatever wants to become a piece of writing.
+        </p>
+    </div>
+
+    <section class="blog-feed" id="blog-posts-section" aria-labelledby="blog-posts-heading">
+        <h2 id="blog-posts-heading">Blog</h2>
+        <div id="blog-posts"></div>
     </section>
 
 </main>
 
+<footer>
+
+    <hr>
+
+    <p>
+        <a href="../landing/">Formal Announcements Page</a>
+        |
+        <a href="../">Back to Home</a>
+    </p>
+
+</footer>
+
 <script>
-    const homeEntries = [
-        "blog/entries/2026-09-10-welcome.txt",
-        "blog/entries/2026-09-29-do-androids-dream-of-electric-sheep.txt"
+    const entries = [
+        "entries/2026-09-10-welcome.txt",
+        "entries/2026-09-29-do-androids-dream-of-electric-sheep.txt"
     ];
 
-    const homeBlogPosts = document.getElementById("home-blog-posts");
+    const feed = document.getElementById("blog-posts");
 
     function parseTextPost(rawText) {
         const lines = rawText.split(/\r?\n/);
@@ -173,8 +107,11 @@
             contentLines.push(line);
         }
 
-        const content = contentLines.join("\n").trim();
-        return { title, posted, content };
+        return {
+            title,
+            posted,
+            content: contentLines.join("\n").trim()
+        };
     }
 
     function excerptText(text, limit = 180) {
@@ -196,16 +133,16 @@
         return Date.UTC(Number(match[3]), month, Number(match[2]), hour, Number(match[5]));
     }
 
-    Promise.all(homeEntries.map(async (entryPath) => {
+    Promise.all(entries.map(async (entryPath) => {
         const response = await fetch(entryPath);
         if (!response.ok) {
             throw new Error(`Could not load ${entryPath}`);
         }
-        return parseTextPost(await response.text());
+        return { path: entryPath, ...parseTextPost(await response.text()) };
     }))
     .then((posts) => {
         posts.sort((firstPost, secondPost) => postedDateValue(secondPost.posted) - postedDateValue(firstPost.posted));
-        posts.forEach(({ title, posted, content }) => {
+        posts.forEach(({ path, title, posted, content }) => {
             const article = document.createElement("article");
             article.className = "blog-entry";
 
@@ -216,25 +153,18 @@
                 </header>
                 <div class="blog-entry-content">
                     <p>${excerptText(content)}</p>
-                    <p><a href="blog/welcome.html">View full entry →</a></p>
+                    <p><a href="${path}">View full entry →</a></p>
                 </div>
             `;
 
-            homeBlogPosts.appendChild(article);
+            feed.appendChild(article);
         });
     })
     .catch((error) => {
-        homeBlogPosts.innerHTML = '<p>Unable to load blog entries right now.</p>';
+        feed.innerHTML = '<article class="writing-entry"><p class="entry-label">Blog</p><p>Unable to load blog entries right now.</p></article>';
         console.error(error);
     });
 </script>
-
-
-<footer>
-    <p>
-        © 2026 Gavin · made w GPT and co-pilot tbh. Also, this isn't actually copyrighted lol ©
-    </p>
-</footer>
 
 </body>
 </html>

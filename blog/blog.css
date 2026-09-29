@@ -49,9 +49,9 @@ nav a:hover {
 
 .blog-entry {
     border-left: 3px solid #171717;
-    margin-top: 40px;
+    margin: 0 0 28px;
     max-width: 720px;
-    padding-left: 20px;
+    padding: 4px 0 4px 20px;
 }
 
 .blog-entry h1 {

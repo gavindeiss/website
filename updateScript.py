@@ -11,7 +11,9 @@ ROOT = Path(__file__).parent
 WRITING_PAGE = ROOT / "writing" / "index.html"
 POETRY_ROOT = ROOT / "writing" / "poems"
 STORY_ROOT = ROOT / "writing" / "shortStories"
+SATIRE_ROOT = ROOT / "writing" / "satire"
 STORY_PAGE_ROOT = STORY_ROOT / "pages"
+SATIRE_PAGE_ROOT = SATIRE_ROOT / "pages"
 DOCX_NAMESPACE = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
 POETRY_CATEGORIES = (
@@ -167,7 +169,7 @@ def story_excerpt(text, limit=280):
 	return clean_text[:limit].rsplit(" ", 1)[0] + "..."
 
 
-def build_story_page(title, body_html):
+def build_story_page(title, body_html, label="Short Story"):
 	return f'''<!DOCTYPE html>
 <html lang="en">
 
@@ -205,7 +207,7 @@ def build_story_page(title, body_html):
 
 <main>
     <article class="story-page">
-        <p class="entry-label">Short Story</p>
+        <p class="entry-label">{escape(label)}</p>
 		{body_html}
     </article>
 </main>
@@ -213,6 +215,10 @@ def build_story_page(title, body_html):
 </body>
 </html>
 '''
+
+
+def build_satire_page(title, body_html):
+	return build_story_page(title, body_html, "Satire")
 
 
 def build_story_markup():
@@ -254,11 +260,50 @@ def build_story_markup():
 	return "\n\n".join(output)
 
 
+def build_satire_markup():
+	satires = sorted(SATIRE_ROOT.glob("**/*"), key=lambda path: (sort_key(path.parent), sort_key(path)))
+	satires = [
+		satire for satire in satires
+		if satire.is_file() and satire.suffix.lower() in {".txt", ".docx"} and satire.stat().st_size
+	]
+	if not satires:
+		return '''        <article class="writing-entry story-preview">
+            <p class="entry-label">Satire</p>
+            <h3>Coming soon</h3>
+            <p>
+                This is where satire can live. Add a new text or docx file under
+                the satire folder and the page will generate a preview automatically.
+            </p>
+        </article>'''
+
+	SATIRE_PAGE_ROOT.mkdir(exist_ok=True)
+	output = []
+	for satire in satires:
+		title, body, body_html = story_parts(satire)
+		slug = story_slug(satire)
+		if satire.parent != SATIRE_ROOT:
+			slug = f"{satire.parent.name}-{slug}"
+		(SATIRE_PAGE_ROOT / f"{slug}.html").write_text(
+			build_satire_page(title, body_html), encoding="utf-8"
+		)
+		output.extend([
+			'        <article class="writing-entry story-preview">',
+			f'            <p class="entry-label">Satire</p>',
+			f'            <h3>{escape(title)}</h3>',
+			f'            <p>{escape(story_excerpt(body))}</p>',
+			f'            <a class="story-link" href="satire/pages/{slug}.html">Read the whole piece</a>',
+			'        </article>',
+		])
+
+	return "\n\n".join(output)
+
+
 def update_writing_page():
 	page = WRITING_PAGE.read_text(encoding="utf-8")
 	sections = (
 		(r"(?s)(        <!-- POETRY_ENTRIES_START -->\n).*?(\n        <!-- POETRY_ENTRIES_END -->)", build_poetry_markup(), "poetry"),
 		(r"(?s)(        <!-- STORY_ENTRIES_START -->\n).*?(\n        <!-- STORY_ENTRIES_END -->)", build_story_markup(), "story"),
+		(r"(?s)(        <!-- SATIRE_ENTRIES_START -->\n).*?(\n        <!-- SATIRE_ENTRIES_END -->)", build_satire_markup(), "satire"),
 	)
 	updated_page = page
 	for pattern, markup, section_name in sections:

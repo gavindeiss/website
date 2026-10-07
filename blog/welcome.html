@@ -55,7 +55,29 @@
 
     <section class="blog-feed" id="blog-posts-section" aria-labelledby="blog-posts-heading">
         <h2 id="blog-posts-heading">Blog</h2>
-        <div id="blog-posts"></div>
+        <div id="blog-posts">
+            <!-- BLOG_ENTRIES_START -->        <article class="blog-entry">
+            <header class="blog-entry-header">
+                <h3>Do Androids Dream of Electric Sheep?</h3>
+                <p class="blog-entry-meta">Posted <time>September 29, 2026 at 6:00 PM EDT</time></p>
+            </header>
+            <div class="blog-entry-content">
+                <p>I’m working on a short story tackling AI ethics. Here’s an excerpt -- And so, these two fully-formed babies were built, able to speak each recorded human language, IQ’s over 9000,...</p>
+                <p><a href="pages/2026-09-29-do-androids-dream-of-electric-sheep.html">View full entry →</a></p>
+            </div>
+        </article>
+
+        <article class="blog-entry">
+            <header class="blog-entry-header">
+                <h3>Welcome to the blog</h3>
+                <p class="blog-entry-meta">Posted <time>September 10, 2026 at 1:12 PM EDT</time></p>
+            </header>
+            <div class="blog-entry-content">
+                <p>This is the first post. Future entries can hold writing, images, videos, links, or any combination of them.</p>
+                <p><a href="pages/2026-09-10-welcome.html">View full entry →</a></p>
+            </div>
+        </article><!-- BLOG_ENTRIES_END -->
+        </div>
     </section>
 
 </main>
@@ -72,99 +94,6 @@
 
 </footer>
 
-<script>
-    const entries = [
-        "entries/2026-09-10-welcome.txt",
-        "entries/2026-09-29-do-androids-dream-of-electric-sheep.txt"
-    ];
-
-    const feed = document.getElementById("blog-posts");
-
-    function parseTextPost(rawText) {
-        const lines = rawText.split(/\r?\n/);
-        let title = "Untitled";
-        let posted = "";
-        let contentLines = [];
-        let inBody = false;
-
-        for (const line of lines) {
-            if (!inBody) {
-                const trimmedLine = line.trim();
-                if (trimmedLine === "") {
-                    continue;
-                }
-                if (trimmedLine.startsWith("Title:")) {
-                    title = trimmedLine.replace(/^Title:\s*/, "").trim();
-                    continue;
-                }
-                if (trimmedLine.startsWith("Posted:")) {
-                    posted = trimmedLine.replace(/^Posted:\s*/, "").trim();
-                    continue;
-                }
-                inBody = true;
-            }
-
-            contentLines.push(line);
-        }
-
-        return {
-            title,
-            posted,
-            content: contentLines.join("\n").trim()
-        };
-    }
-
-    function excerptText(text, limit = 180) {
-        const clean = text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/\s+/g, " ").trim();
-        if (clean.length <= limit) {
-            return clean;
-        }
-        return clean.slice(0, limit).trimEnd() + "...";
-    }
-
-    function postedDateValue(posted) {
-        const match = posted.match(/^([A-Za-z]+) (\d{1,2}), (\d{4}) at (\d{1,2}):(\d{2}) (AM|PM)/);
-        const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(match?.[1]);
-        if (month < 0) {
-            return 0;
-        }
-
-        const hour = Number(match[4]) % 12 + (match[6] === "PM" ? 12 : 0);
-        return Date.UTC(Number(match[3]), month, Number(match[2]), hour, Number(match[5]));
-    }
-
-    Promise.all(entries.map(async (entryPath) => {
-        const response = await fetch(entryPath);
-        if (!response.ok) {
-            throw new Error(`Could not load ${entryPath}`);
-        }
-        return { path: entryPath, ...parseTextPost(await response.text()) };
-    }))
-    .then((posts) => {
-        posts.sort((firstPost, secondPost) => postedDateValue(secondPost.posted) - postedDateValue(firstPost.posted));
-        posts.forEach(({ path, title, posted, content }) => {
-            const article = document.createElement("article");
-            article.className = "blog-entry";
-
-            article.innerHTML = `
-                <header class="blog-entry-header">
-                    <h3>${title}</h3>
-                    <p class="blog-entry-meta">Posted <time>${posted}</time></p>
-                </header>
-                <div class="blog-entry-content">
-                    <p>${excerptText(content)}</p>
-                    <p><a href="${path}">View full entry →</a></p>
-                </div>
-            `;
-
-            feed.appendChild(article);
-        });
-    })
-    .catch((error) => {
-        feed.innerHTML = '<article class="writing-entry"><p class="entry-label">Blog</p><p>Unable to load blog entries right now.</p></article>';
-        console.error(error);
-    });
-</script>
 
 </body>
 </html>

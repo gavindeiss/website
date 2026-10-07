@@ -187,11 +187,67 @@ h1 {
     margin-bottom: 5px;
 }
 
+.poem-entry {
+    border-left: 3px solid #171717;
+    cursor: pointer;
+    margin: 0 0 1.25rem;
+    max-width: 680px;
+    padding: 4px 0 4px 20px;
+    user-select: none;
+}
+
+.poem-entry,
+.poem-entry * {
+    cursor: pointer;
+}
+
+.poem-entry:focus-visible {
+    outline: 2px solid #171717;
+    outline-offset: 4px;
+}
+
 .poem-text {
     font: inherit;
     margin: 1em 0;
     white-space: pre-wrap;
     tab-size: 4;
+}
+
+.poem-entry--static .poem-text-full,
+.poem-entry--static .poem-text-preview {
+    display: block;
+}
+
+.poem-text-preview {
+    opacity: 0.9;
+}
+
+.poem-text-full {
+    display: none;
+}
+
+.poem-entry--expandable.is-expanded .poem-text-preview {
+    display: none;
+}
+
+.poem-entry--expandable.is-expanded .poem-text-full {
+    display: block;
+}
+
+.poem-toggle {
+    background: transparent;
+    border: 1px solid #171717;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    margin-top: 0.5rem;
+    padding: 5px 10px;
+}
+
+.poem-toggle:hover,
+.poem-toggle:focus-visible {
+    background: #171717;
+    color: #f4f0df;
 }
 
 .story-preview {

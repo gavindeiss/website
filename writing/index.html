@@ -83,17 +83,17 @@
             <h3>Haiku &amp; Tanka</h3>
             <section class="poetry-year" aria-labelledby="haiku-tanka-2026">
                 <h4 id="haiku-tanka-2026">2026</h4>
-                <article class="writing-entry">
+                <article class="writing-entry poem-entry poem-entry--static" aria-expanded="false">
                     <p class="entry-label">Untitled</p>
-                    <pre class="poem-text">Through the looking glass,
+                    <pre class="poem-text poem-text-full">Through the looking glass,
 Pilot pens touch blades of grass,
 Desks on concrete floors.
 Nature lurks into the halls,
 Communal space flies for all.</pre>
                 </article>
-                <article class="writing-entry">
+                <article class="writing-entry poem-entry poem-entry--static" aria-expanded="false">
                     <p class="entry-label">Untitled</p>
-                    <pre class="poem-text">Lionized dogmas,
+                    <pre class="poem-text poem-text-full">Lionized dogmas,
 From priests and politicians,
 Make thought-leaders purr
 </pre>
@@ -105,9 +105,14 @@ Make thought-leaders purr
             <h3>Free-form</h3>
             <section class="poetry-year" aria-labelledby="free-form-2026">
                 <h4 id="free-form-2026">2026</h4>
-                <article class="writing-entry">
+                <article class="writing-entry poem-entry poem-entry--expandable" role="button" tabindex="0" aria-expanded="false">
                     <p class="entry-label">Untitled</p>
-                    <pre class="poem-text">I just wonder why they don’t teach us in school
+                    <pre class="poem-text poem-text-preview">I just wonder why they don’t teach us in school
+  How unimportant talking really is.
+   It’s almost all nonverbal, how we speak after
+   25.
+</pre>
+                    <pre class="poem-text poem-text-full">I just wonder why they don’t teach us in school
   How unimportant talking really is.
    It’s almost all nonverbal, how we speak after
    25.
@@ -129,10 +134,16 @@ The disquieting clatter of a silver spoon,
  It&#x27;s all undecipherable morse code that
  Breaks the binary.
 </pre>
+                    <button class="poem-toggle" type="button" aria-expanded="false">View full entry</button>
                 </article>
-                <article class="writing-entry">
+                <article class="writing-entry poem-entry poem-entry--expandable" role="button" tabindex="0" aria-expanded="false">
                     <p class="entry-label">Untitled</p>
-                    <pre class="poem-text">Nostalgia ultra
+                    <pre class="poem-text poem-text-preview">Nostalgia ultra
+May be
+A couple at the age of 80
+Watching TV
+seated in lazyboys, </pre>
+                    <pre class="poem-text poem-text-full">Nostalgia ultra
 May be
 A couple at the age of 80
 Watching TV
@@ -142,10 +153,16 @@ The same ones where they learned their ABCs, 123s,
 Michael Jackson playing on cassette in the background,
 Recess going on outside.
 </pre>
+                    <button class="poem-toggle" type="button" aria-expanded="false">View full entry</button>
                 </article>
-                <article class="writing-entry">
+                <article class="writing-entry poem-entry poem-entry--expandable" role="button" tabindex="0" aria-expanded="false">
                     <p class="entry-label">Untitled</p>
-                    <pre class="poem-text">Our eyes locked,
+                    <pre class="poem-text poem-text-preview">Our eyes locked,
+Stone gaze, wardrobes 
+Lying
+on our skin. 
+In an instant </pre>
+                    <pre class="poem-text poem-text-full">Our eyes locked,
 Stone gaze, wardrobes 
 Lying
 on our skin. 
@@ -177,6 +194,7 @@ Great blue.
 Oceanus, ouranos. 
 
 Your dead-honest blue eyes were all i needed to see.</pre>
+                    <button class="poem-toggle" type="button" aria-expanded="false">View full entry</button>
                 </article>
             </section>
         </div>
@@ -282,6 +300,48 @@ Your dead-honest blue eyes were all i needed to see.</pre>
                 view.hidden = !isSelected;
             });
         });
+    });
+
+    document.querySelectorAll(".poem-entry--expandable").forEach((entry) => {
+        const preview = entry.querySelector(".poem-text-preview");
+        const full = entry.querySelector(".poem-text-full");
+        const toggle = entry.querySelector(".poem-toggle");
+
+        const updateState = () => {
+            const isExpanded = entry.classList.contains("is-expanded");
+            entry.setAttribute("aria-expanded", String(isExpanded));
+            if (preview) preview.hidden = isExpanded;
+            if (full) full.hidden = !isExpanded;
+            if (toggle) {
+                toggle.textContent = isExpanded ? "Collapse entry" : "View full entry";
+                toggle.setAttribute("aria-expanded", String(isExpanded));
+            }
+        };
+
+        entry.addEventListener("click", (event) => {
+            if (event.target.closest("button")) {
+                return;
+            }
+            entry.classList.toggle("is-expanded");
+            updateState();
+        });
+
+        if (toggle) {
+            toggle.addEventListener("click", (event) => {
+                event.stopPropagation();
+                entry.classList.toggle("is-expanded");
+                updateState();
+            });
+        }
+
+        entry.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                entry.click();
+            }
+        });
+
+        updateState();
     });
 </script>
 

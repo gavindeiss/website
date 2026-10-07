@@ -9,11 +9,15 @@ from xml.etree import ElementTree
 
 ROOT = Path(__file__).parent
 WRITING_PAGE = ROOT / "writing" / "index.html"
+BLOG_PAGE = ROOT / "blog" / "welcome.html"
+HOME_PAGE = ROOT / "index.html"
 POETRY_ROOT = ROOT / "writing" / "poems"
 STORY_ROOT = ROOT / "writing" / "shortStories"
 SATIRE_ROOT = ROOT / "writing" / "satire"
+BLOG_ENTRY_ROOT = ROOT / "blog" / "entries"
 STORY_PAGE_ROOT = STORY_ROOT / "pages"
 SATIRE_PAGE_ROOT = SATIRE_ROOT / "pages"
+BLOG_PAGE_ROOT = ROOT / "blog" / "pages"
 DOCX_NAMESPACE = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
 POETRY_CATEGORIES = (
@@ -169,6 +173,139 @@ def story_excerpt(text, limit=280):
 	return clean_text[:limit].rsplit(" ", 1)[0] + "..."
 
 
+def blog_entry_parts(path):
+	lines = path.read_text(encoding="utf-8").splitlines()
+	if not lines:
+		raise ValueError(f"Blog entry file is empty: {path}")
+
+	title = "Untitled"
+	posted = ""
+	body_lines = []
+	in_body = False
+
+	for line in lines:
+		trimmed = line.strip()
+		if not in_body:
+			if not trimmed:
+				continue
+			if trimmed.startswith("Title:"):
+				title = trimmed.replace("Title:", "", 1).strip()
+				continue
+			if trimmed.startswith("Posted:"):
+				posted = trimmed.replace("Posted:", "", 1).strip()
+				continue
+			in_body = True
+
+		body_lines.append(line.rstrip())
+
+	body = "\n".join(body_lines).strip()
+	if not body:
+		raise ValueError(f"Blog entry is missing narrative content: {path}")
+
+	return title, posted, body
+
+
+def blog_entry_body_html(text):
+	paragraphs = []
+	for paragraph in re.split(r"\n\s*\n", text.strip()):
+		formatted = escape(paragraph)
+		formatted = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", formatted)
+		formatted = formatted.replace("\n", "<br>")
+		paragraphs.append(f"<p>{formatted}</p>")
+	return "\n".join(paragraphs) if paragraphs else "<p></p>"
+
+
+def build_blog_post_page(title, posted, body_html):
+	return f'''<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{escape(title)} | Blog</title>
+
+    <link rel="stylesheet" href="../../writing/writing.css">
+</head>
+
+<body>
+
+<header>
+    <div class="page-heading">
+        <h1>{escape(title)}</h1>
+        <a class="support-link" href="../../support/">Support</a>
+    </div>
+
+    <nav>
+        <a href="../../landing/">Formal Announcements Page</a>
+    </nav>
+
+    <hr>
+
+    <nav>
+        <a href="../../">Home</a>
+        |
+        <a href="../welcome.html">Back to Blog</a>
+    </nav>
+
+    <hr>
+</header>
+
+<main>
+    <article class="blog-entry">
+        <header class="blog-entry-header">
+            <p class="blog-entry-meta">Posted <time>{escape(posted)}</time></p>
+        </header>
+        <div class="blog-entry-content">
+            {body_html}
+        </div>
+    </article>
+</main>
+
+</body>
+</html>
+'''
+
+
+def build_blog_preview(title, posted, body, slug, href):
+	excerpt = re.sub(r"\s+", " ", body).strip()
+	if len(excerpt) > 180:
+		excerpt = excerpt[:180].rsplit(" ", 1)[0] + "..."
+	return f'''        <article class="blog-entry">
+            <header class="blog-entry-header">
+                <h3>{escape(title)}</h3>
+                <p class="blog-entry-meta">Posted <time>{escape(posted)}</time></p>
+            </header>
+            <div class="blog-entry-content">
+                <p>{escape(excerpt)}</p>
+                <p><a href="{href}">View full entry →</a></p>
+            </div>
+        </article>'''
+
+
+def build_blog_markup(link_target):
+	entries = sorted(BLOG_ENTRY_ROOT.glob("*.txt"), key=lambda path: path.name, reverse=True)
+	if not entries:
+		return '''        <article class="writing-entry">
+            <p class="entry-label">Blog</p>
+            <h3>Coming soon</h3>
+            <p>There are no blog posts yet.</p>
+        </article>'''
+
+	BLOG_PAGE_ROOT.mkdir(exist_ok=True)
+	output = []
+	for entry in entries:
+		title, posted, body = blog_entry_parts(entry)
+		slug = entry.stem
+		(BLOG_PAGE_ROOT / f"{slug}.html").write_text(
+			build_blog_post_page(title, posted, blog_entry_body_html(body)),
+			encoding="utf-8",
+		)
+		output.append(build_blog_preview(title, posted, body, slug, f"{link_target}/{slug}.html"))
+
+	return "\n\n".join(output)
+
+
 def build_story_page(title, body_html, label="Short Story"):
 	return f'''<!DOCTYPE html>
 <html lang="en">
@@ -314,5 +451,17 @@ def update_writing_page():
 	WRITING_PAGE.write_text(updated_page, encoding="utf-8")
 
 
+def update_blog_pages():
+	for page_path, link_target in ((BLOG_PAGE, "pages"), (HOME_PAGE, "blog/pages")):
+		page = page_path.read_text(encoding="utf-8")
+		pattern = r"(?s)(<!-- BLOG_ENTRIES_START -->).*?(<!-- BLOG_ENTRIES_END -->)"
+		markup = build_blog_markup(link_target)
+		updated_page, replacements = re.subn(pattern, rf"\1{markup}\2", page, count=1)
+		if replacements != 1:
+			raise RuntimeError(f"Could not find the generated blog section in {page_path.name}")
+		page_path.write_text(updated_page, encoding="utf-8")
+
+
 if __name__ == "__main__":
 	update_writing_page()
+	update_blog_pages()

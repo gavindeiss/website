@@ -37,6 +37,14 @@ def format_poem(text):
 	return escape(text)
 
 
+def poem_preview(text, max_lines=5):
+	lines = text.splitlines()
+	if len(lines) <= max_lines:
+		return text, False
+	preview_lines = lines[:max_lines]
+	return "\n".join(preview_lines), True
+
+
 def build_poetry_view(folder_name, view_id, heading):
 	category_root = POETRY_ROOT / folder_name
 	years = sorted((path for path in category_root.iterdir() if path.is_dir()), key=sort_key)
@@ -57,12 +65,24 @@ def build_poetry_view(folder_name, view_id, heading):
 		])
 
 		for poem in poems:
-			output.extend([
-				'                <article class="writing-entry">',
-				'                    <p class="entry-label">Untitled</p>',
-				f'                    <pre class="poem-text">{format_poem(poem.read_text(encoding="utf-8"))}</pre>',
-				'                </article>',
-			])
+			poem_text = poem.read_text(encoding="utf-8")
+			preview, expandable = poem_preview(poem_text)
+			if expandable:
+				output.extend([
+					'                <article class="writing-entry poem-entry poem-entry--expandable" role="button" tabindex="0" aria-expanded="false">',
+					'                    <p class="entry-label">Untitled</p>',
+					f'                    <pre class="poem-text poem-text-preview">{format_poem(preview)}</pre>',
+					f'                    <pre class="poem-text poem-text-full">{format_poem(poem_text)}</pre>',
+					'                    <button class="poem-toggle" type="button" aria-expanded="false">View full entry</button>',
+					'                </article>',
+				])
+			else:
+				output.extend([
+					'                <article class="writing-entry poem-entry poem-entry--static" aria-expanded="false">',
+					'                    <p class="entry-label">Untitled</p>',
+					f'                    <pre class="poem-text poem-text-full">{format_poem(poem_text)}</pre>',
+					'                </article>',
+				])
 
 		output.extend([
 			"            </section>",

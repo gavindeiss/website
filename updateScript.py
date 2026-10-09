@@ -3,6 +3,7 @@
 from html import escape
 from pathlib import Path
 import re
+from urllib.parse import quote
 from zipfile import ZipFile
 from xml.etree import ElementTree
 
@@ -237,7 +238,37 @@ def blog_entry_body_html(text):
 	return "\n".join(paragraphs) if paragraphs else "<p></p>"
 
 
-def build_blog_post_page(title, posted, body_html):
+def blog_entry_audio_html(entry):
+	if entry.parent == BLOG_ENTRY_ROOT:
+		return ""
+
+	audio_types = {
+		".mp3": "audio/mpeg",
+		".m4a": "audio/mp4",
+		".mp4": "audio/mp4",
+		".ogg": "audio/ogg",
+		".wav": "audio/wav",
+		".webm": "audio/webm",
+	}
+	audio_files = sorted(
+		(path for path in entry.parent.iterdir() if path.is_file() and path.suffix.lower() in audio_types),
+		key=lambda path: path.name.lower(),
+	)
+	if not audio_files:
+		return ""
+
+	players = []
+	for audio_file in audio_files:
+		source = f"../entries/{quote(entry.parent.name)}/{quote(audio_file.name)}"
+		players.append(
+			f'<figure class="entry-media"><figcaption>Work-in-progress audio</figcaption>'
+			f'<audio controls preload="metadata"><source src="{source}" type="{audio_types[audio_file.suffix.lower()]}">'
+			"Your browser does not support embedded audio.</audio></figure>"
+		)
+	return "\n".join(players)
+
+
+def build_blog_post_page(title, posted, body_html, audio_html=""):
 	return f'''<!DOCTYPE html>
 <html lang="en">
 
@@ -280,6 +311,7 @@ def build_blog_post_page(title, posted, body_html):
         </header>
         <div class="blog-entry-content">
             {body_html}
+			{audio_html}
         </div>
     </article>
 </main>
@@ -306,7 +338,7 @@ def build_blog_preview(title, posted, body, slug, href):
 
 
 def build_blog_markup(link_target):
-	entries = sorted(BLOG_ENTRY_ROOT.glob("*.txt"), key=lambda path: path.name, reverse=True)
+	entries = sorted(BLOG_ENTRY_ROOT.rglob("*.txt"), key=lambda path: path.name, reverse=True)
 	if not entries:
 		return '''        <article class="writing-entry">
             <p class="entry-label">Blog</p>
@@ -320,7 +352,7 @@ def build_blog_markup(link_target):
 		title, posted, body = blog_entry_parts(entry)
 		slug = entry.stem
 		(BLOG_PAGE_ROOT / f"{slug}.html").write_text(
-			build_blog_post_page(title, posted, blog_entry_body_html(body)),
+			build_blog_post_page(title, posted, blog_entry_body_html(body), blog_entry_audio_html(entry)),
 			encoding="utf-8",
 		)
 		output.append(build_blog_preview(title, posted, body, slug, f"{link_target}/{slug}.html"))
@@ -384,7 +416,8 @@ def build_story_markup():
 	stories = sorted(STORY_ROOT.glob("**/*"), key=lambda path: (sort_key(path.parent), sort_key(path)))
 	stories = [
 		story for story in stories
-		if story.is_file() and story.suffix.lower() in {".txt", ".docx"} and story.stat().st_size
+		if story.is_file() and not story.name.startswith("~$")
+		and story.suffix.lower() in {".txt", ".docx"} and story.stat().st_size
 	]
 	if not stories:
 		return '''        <article class="writing-entry">
@@ -423,7 +456,8 @@ def build_satire_markup():
 	satires = sorted(SATIRE_ROOT.glob("**/*"), key=lambda path: (sort_key(path.parent), sort_key(path)))
 	satires = [
 		satire for satire in satires
-		if satire.is_file() and satire.suffix.lower() in {".txt", ".docx"} and satire.stat().st_size
+		if satire.is_file() and not satire.name.startswith("~$")
+		and satire.suffix.lower() in {".txt", ".docx"} and satire.stat().st_size
 	]
 	if not satires:
 		return '''        <article class="writing-entry story-preview">

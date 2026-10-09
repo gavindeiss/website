@@ -157,6 +157,8 @@ def docx_parts(path):
 			paragraph_html.append(run_html)
 
 		text = "".join(paragraph_text)
+		if not text.strip():
+			continue
 		paragraph_properties = paragraph.find("w:pPr", DOCX_NAMESPACE)
 		style = []
 		if paragraph_properties is not None:

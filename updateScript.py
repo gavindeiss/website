@@ -289,10 +289,6 @@ def build_blog_post_page(title, posted, body_html, audio_html=""):
         <a class="support-link" href="../../support/">Support</a>
     </div>
 
-    <nav>
-        <a href="../../landing/">Formal Announcements Page</a>
-    </nav>
-
     <hr>
 
     <nav>
@@ -380,10 +376,6 @@ def build_story_page(title, body_html, label="Short Story"):
         <h1>{escape(title)}</h1>
 		<a class="support-link" href="../../../support/">Support</a>
     </div>
-
-    <nav>
-		<a href="../../../landing/">Formal Announcements Page</a>
-    </nav>
 
     <hr>
 

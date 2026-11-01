@@ -277,6 +277,10 @@ h1 {
     tab-size: 4;
 }
 
+.story-text-muted {
+    color: #666;
+}
+
 .story-text p {
     margin: 0 0 1em;
 }

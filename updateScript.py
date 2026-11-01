@@ -110,7 +110,10 @@ def story_parts(path):
 
 	title = lines[0].strip()
 	body = "\n".join(lines[1:]).lstrip("\n")
-	return title, body, f'<pre class="story-text">{escape(body)}</pre>'
+	body_html = escape(body)
+	body_html = body_html.replace("[[gray]]", '<span class="story-text-muted">')
+	body_html = body_html.replace("[[/gray]]", "</span>")
+	return title, body, f'<pre class="story-text">{body_html}</pre>'
 
 
 def docx_parts(path):
@@ -190,7 +193,8 @@ def story_slug(path):
 
 
 def story_excerpt(text, limit=280):
-	clean_text = re.sub(r"\s+", " ", text).strip()
+	clean_text = re.sub(r"\[\[/?gray\]\]", "", text)
+	clean_text = re.sub(r"\s+", " ", clean_text).strip()
 	if len(clean_text) <= limit:
 		return clean_text
 	return clean_text[:limit].rsplit(" ", 1)[0] + "..."
